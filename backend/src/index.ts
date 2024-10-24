@@ -10,8 +10,16 @@ export default class Server {
     }
 
     private config(app: Application): void {
+        const allowedOrigins = ["http://127.0.0.1:5500", "http://localhost:8081"];
+        
         const corsOptions: CorsOptions = {
-            origin: "http://localhost:8081"// rota alternativa/opcional
+            origin: function (origin, callback) {
+                if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+                    callback(null, true);
+                } else {
+                    callback(new Error("Origem nao permitida pelo CORS"));
+                }
+            }
         };
 
         app.use(cors(corsOptions));
@@ -22,7 +30,6 @@ export default class Server {
 
 AppDataSource.initialize()
     .then(() => {
-        // here you can start to work with your database
-        console.log(`O banco rodando`);
+        console.log(`O banco está rodando`);
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error));

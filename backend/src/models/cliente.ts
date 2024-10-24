@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Agendamento } from './agendamento'; // Importando a classe Agendamento
+import { Agendamento } from './agendamento'; 
 
 @Entity({ name: 'Cliente' })
 export class Cliente {
@@ -18,8 +18,8 @@ export class Cliente {
     @Column({ length: 150, unique: true })
     email: string;
 
-    @Column({ type: 'tinyint' })
-    sexo: number;
+    @Column({ length: 50 })
+    sexo: string;
 
     @Column({ length: 45 })
     telefone: string;
@@ -38,7 +38,7 @@ export class Cliente {
         data_nasc: Date,
         cpf: string,
         email: string,
-        sexo: number,
+        sexo: string,
         telefone: string,
         senha: string,
         matricula?: string,
