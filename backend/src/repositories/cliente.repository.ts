@@ -12,6 +12,7 @@ class ClienteRepository {
             throw new Error("Falha ao criar o cliente!");
         }
     }
+    
 
     async buscarAll(): Promise<Cliente[]> {
         try {
@@ -35,10 +36,24 @@ class ClienteRepository {
     async buscarByCpf(cpf: string): Promise<Cliente | null> {
         try {
             return await this.clienteRepository.findOneBy({
-                cpf: cpf,
+                cpf: cpf 
             });
         } catch (error) {
             throw new Error("Falha ao buscar o cliente pelo CPF!");
+        }
+    }
+
+    async buscarByEmail(email: string): Promise<Cliente | null> {
+        try {
+            const cliente = await this.clienteRepository.findOneBy({ email });
+            if (cliente) {
+                return cliente; // Retorna o cliente encontrado
+            } else {
+                return null; // Cliente não encontrado, retorno esperado
+            }
+        } catch (error) {
+            // Aqui o erro capturado é inesperado (ex: problema de banco, conexão)
+            throw new Error(`Erro ao buscar o cliente com CPF ${email}`);
         }
     }
 

@@ -5,7 +5,7 @@ import clienteRepository from "../repositories/cliente.repository";
 export default class ClienteController {
 
     async create(req: Request, res: Response) {
-        // Verifica se todos os campos obrigatórios estão presentes
+    
         const { nome, cpf, email, senha } = req.body;
         if (!nome || !cpf || !email || !senha) {
             res.status(400).send({
@@ -15,6 +15,16 @@ export default class ClienteController {
         }
 
         try {
+            
+            const cpfExists = await clienteRepository.buscarByCpf(cpf);
+            const emailExists = await clienteRepository.buscarByEmail(email);
+            if (cpfExists || emailExists) {
+                res.status(409).send({
+                    message: "Não foi possível realizar o cadastro. Verifique suas informações e tente novamente."
+                });
+                return; // para n quebrar a rota, primeiro gerar a response depois enviar o retorno
+            }
+
             const cliente: Cliente = req.body;
             const savedCliente = await clienteRepository.criar(cliente);
             res.status(201).send(savedCliente);

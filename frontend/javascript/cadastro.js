@@ -40,14 +40,22 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify(formCadastrar)
       })
-      .then(response => response.json())
+      .then(response => {
+        if (response.status === 201) {
+          return response.json();
+        } else if (response.status === 409) {
+          return response.json().then(data => { throw new Error(data.message); });
+        } else {
+          throw new Error('Ocorreu um erro ao realizar o cadastro.');
+        }
+      })
       .then(cadastro => {
         console.log('Success:', cadastro);
         alert('Cadastro realizado com sucesso!');
       })
       .catch((error) => {
         console.error('Error:', error);
-        alert('Ocorreu um erro ao realizar o cadastro.');
+        alert(error.message);
       });
     }
   });
