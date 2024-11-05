@@ -1,7 +1,8 @@
-import express, { Application } from "express";
-import cors, { CorsOptions } from "cors";
-import Routes from "./routes/routes";
-import { AppDataSource } from "./db/data-source";
+import express, { Application } from 'express';
+import path from 'path';
+import cors, { CorsOptions } from 'cors';
+import Routes from './routes/routes';
+import { AppDataSource } from './db/data-source';
 
 export default class Server {
     constructor(app: Application) {

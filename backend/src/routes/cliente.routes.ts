@@ -13,7 +13,7 @@ class ClienteRoutes {
 
     // Criar um novo cliente.
     this.router.post("/cliente", this.controller.create);
-
+    // Rota para o login
     this.router.post("/login", this.controller.login);
 
     // Retornar todos os clientes já cadastrados.

@@ -5,7 +5,7 @@ import { CategoriaFuncionario } from './categoriaFuncionario';
 @Entity({ name: 'categoria' })
 export class Categoria {
     @PrimaryGeneratedColumn({ type: 'int' })
-    idcategoria!: number;
+    idCategoria!: number;
 
     @Column({ length: 60 })
     nome: string;
