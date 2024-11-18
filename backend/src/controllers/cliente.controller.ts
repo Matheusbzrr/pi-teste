@@ -95,6 +95,25 @@ export default class ClienteController {
         }
     }
 
+    async findByEmail(req: Request, res: Response) {
+        const email: string = req.body.email;
+
+        try{
+            const cliente = await clienteRepository.buscarByEmail(email);
+            if (cliente) {
+                res.status(200).send(cliente);
+            } else {
+                res.status(404).send({
+                    message: `Não foi encontrado nenhum cliente com o email=${email}.`
+                });
+            }
+        } catch (err){
+            res.status(500).send({
+                message: `Erro ao tentar buscar o cliente com email=${email}.`
+            });
+        }
+    }
+
     async findByCpf(req: Request, res: Response) {
         const cpf: string = req.params.cpf;
 

@@ -13,14 +13,11 @@ export class Funcionario {
     @Column({ length: 45, unique: true })
     cpf: string;
 
-    @Column({ type: 'tinyint' })
-    sexo: number;
+    @Column({ length: 50 }) //TROCAR NO BANCO DE DADOS PARA STRING
+    sexo: string;
 
     @Column({ length: 45, unique: true })
     email: string;
-
-    @Column({ length: 45 })
-    senha: string;
 
     @OneToMany(() => Agendamento, agendamento => agendamento.funcionario)
     agendamentos!: Agendamento[];
@@ -31,14 +28,14 @@ export class Funcionario {
     constructor(
         nome: string,
         cpf: string,
-        sexo: number,
+        sexo: string,
         email: string,
-        senha: string,
+        
     ) {
         this.nome = nome;
         this.cpf = cpf;
         this.sexo = sexo;
         this.email = email;
-        this.senha = senha;
+        
     }
 }

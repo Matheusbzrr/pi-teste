@@ -22,6 +22,8 @@ class ClienteRoutes {
     // Retorna um cliente específico pelo seu id
     this.router.get("/cliente/:id", this.controller.findOne);
 
+    this.router.get("/email", this.controller.findByEmail);
+
     // Retorna um cliente específico pelo seu CPF
     this.router.get("/cliente/cpf/:cpf", this.controller.findByCpf);
 

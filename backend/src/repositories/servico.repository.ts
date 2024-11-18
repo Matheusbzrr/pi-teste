@@ -74,11 +74,11 @@ class ServicoRepository {
 
     async deleteAll(): Promise<number> {
         try {
-            // Executa a query para contar os registros antes da deleção
+            
             const result = await this.servicoRepository.query("select count(idServico) as total from Servico;");
-            await this.servicoRepository.query("delete from Servico;"); // Adicionei await para garantir que a operação seja concluída
+            await this.servicoRepository.query("delete from Servico;"); 
             const num = result[0]?.total || 0; 
-            return num; // Retorna o número de Servicos deletados
+            return num;
         } catch (error) {
             throw new Error("Falha ao deletar todos os Servicos!");
         }
