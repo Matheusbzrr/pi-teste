@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Agendamento } from './agendamento';
-import { CategoriaFuncionario } from './categoriaFuncionario';
+import { Categoria } from './categoria';
 
 @Entity({ name: 'Funcionario' })
 export class Funcionario {
@@ -22,20 +22,27 @@ export class Funcionario {
     @OneToMany(() => Agendamento, agendamento => agendamento.funcionario)
     agendamentos!: Agendamento[];
 
-    @OneToMany(() => CategoriaFuncionario, categoriaFuncionario => categoriaFuncionario.funcionario)
-    categoriasFuncionario!: CategoriaFuncionario[];
+    @ManyToMany(() => Categoria)
+    @JoinTable()
+    categorias?: Categoria[];
+
+   
 
     constructor(
         nome: string,
         cpf: string,
         sexo: string,
         email: string,
+        categorias?: Categoria[],
+        
         
     ) {
         this.nome = nome;
         this.cpf = cpf;
         this.sexo = sexo;
         this.email = email;
+        this.categorias = categorias;
+        
         
     }
 }

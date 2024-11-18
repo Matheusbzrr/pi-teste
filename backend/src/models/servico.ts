@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn, ManyToMany } from 'typeorm';
 import { Categoria } from './categoria';
-import { ServicoAgendamento } from './servicoAgendamento';
+import { Agendamento } from './agendamento';
+
 
 @Entity({ name: 'servico' })
 export class Servico {
@@ -20,8 +21,8 @@ export class Servico {
     @JoinColumn({ name: 'categoria_idcategoria' }) // Especifica a coluna de junção
     categoria!: Categoria;
 
-    @OneToMany(() => ServicoAgendamento, servicoAgendamento => servicoAgendamento.servico)
-    servicoAgendamentos!: ServicoAgendamento[];
+    @ManyToMany(() => Agendamento, agendamento => agendamento.servicos)
+    agendamentos?: Agendamento[];
 
     constructor(nome: string, valor: number, categoria: Categoria, descricao?: string) {  
         this.nome = nome;

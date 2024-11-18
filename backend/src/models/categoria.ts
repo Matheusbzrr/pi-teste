@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
 import { Servico } from './servico';
-import { CategoriaFuncionario } from './categoriaFuncionario';
+import { Funcionario } from './funcionario';
 
-@Entity({ name: 'categoria' })
+@Entity({ name: 'Categoria' })
 export class Categoria {
     @PrimaryGeneratedColumn({ type: 'int' })
     idCategoria!: number;
@@ -16,11 +16,16 @@ export class Categoria {
     @OneToMany(() => Servico, servico => servico.categoria)
     servicos!: Servico[];
 
-    @OneToMany(() => CategoriaFuncionario, categoriaFuncionario => categoriaFuncionario.categoria)
-    categoriasFuncionario!: CategoriaFuncionario[];
-
-    constructor(nome: string, descricao?: string) {
+    @ManyToMany(() => Funcionario, funcionario => funcionario.categorias)
+    funcionarios?: Funcionario[];
+    
+    constructor(
+        nome: string,
+        descricao?: string,
+        
+    ) {
         this.nome = nome;
         this.descricao = descricao;
+        
     }
 }

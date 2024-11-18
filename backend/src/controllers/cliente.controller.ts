@@ -115,7 +115,7 @@ export default class ClienteController {
     }
 
     async findByCpf(req: Request, res: Response) {
-        const cpf: string = req.params.cpf;
+        const cpf: string = req.params.cpf; //DADOS SENSIVEIS NAO PODEM SER PASSADOS POR PARAMETRO PRECISA PASSAR NO CORPO DO JSON
 
         try {
             const cliente = await clienteRepository.buscarByCpf(cpf);
@@ -134,16 +134,17 @@ export default class ClienteController {
     }
 
     async update(req: Request, res: Response) {
-        let cliente: Cliente = req.body;
-        cliente.idCliente = parseInt(req.params.id); // Obtém o ID da URL e o define no cliente
+        const idCliente = parseInt(req.params.id); // Obtém o ID da URL
+        const dadosAtualizados = req.body; // Dados que serão atualizados
+    
         try {
-            await clienteRepository.update(cliente);
+            const clienteAtualizado = await clienteRepository.update(idCliente, dadosAtualizados);
             res.send({
-                message: `Cliente ${cliente.nome} atualizado com sucesso!`
+                message: `Cliente ${clienteAtualizado.nome} atualizado com sucesso!`
             });
         } catch (err) {
             res.status(500).send({
-                message: `Erro ao atualizar o cliente com id=${cliente.idCliente}.`
+                message: `Erro ao atualizar o cliente com id=${idCliente}.`
             });
         }
     }

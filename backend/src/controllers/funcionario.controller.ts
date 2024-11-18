@@ -1,48 +1,60 @@
 import { Request,Response } from "express";
 import { Funcionario } from "../models/funcionario";
-import funcionarioRepositoy from "../repositories/funcionario.repositoy";
+import funcionarioRepository from "../repositories/funcionario.repository";
+import categoriaRepository from "../repositories/categoria.repository";
+categoriaRepository
 
 
 export default class FuncionarioController{
     async create(req: Request, res: Response) {
-        const { nome, cpf, sexo, email} = req.body;
-        if(!nome || !cpf || !sexo || !email){
-            res.status(404).send({ message: "Dados invalidos"});
-            return;
-        }
-
+        if (!req.body.funcionario) {
+            return res.status(400).send({ message: 'Preencha corretamente por favor' });
+        } 
+    
         try{
-            const cpfExiste = await funcionarioRepositoy.buscarByCpf(cpf);
-            const emailExiste = await funcionarioRepositoy.buscarByEmail(email);
+            const funcionario = new Funcionario(
+                req.body.funcionario.nome,
+                req.body.funcionario.cpf,
+                req.body.funcionario.sexo,
+                req.body.funcionario.email,
+                
+            );
 
-            if (cpfExiste || emailExiste){
-                res.status(404).send({ message: "Não foi possível realizar o cadstro. Verifique as informações e tente novamente"});
-                return;
+            funcionario.categorias = [];
+
+            if (req.body.categorias && Array.isArray(req.body.categorias)){
+                for(const categoriaId of req.body.categorias){
+                    const categoria = await categoriaRepository.buscarById(categoriaId);
+                    if(categoria){
+                        funcionario.categorias.push(categoria);
+                    } 
+                }
             }
-            const funcionario: Funcionario = req.body;
-            const salvarFuncionario = await funcionarioRepositoy.criar(funcionario);
-            res.status(201).send(salvarFuncionario);
 
-        } catch{
-            res.status(500).send({ message: "Erro ao realizar o cadastro"});
+            const novoFuncionario = await funcionarioRepository.criar(funcionario);
+            res.status(201).send(novoFuncionario);
+
+        } catch (err) {
+            res.status(500).send({ message: "Erro ao cadastrar o funcionario"});
         }
     }
+    
 
 
     async findAll(req: Request, res: Response) { // apagar request pq n ta sendo chamado 
         try{
-            const funcionarios = await funcionarioRepositoy.buscarAll();
+            const funcionarios = await funcionarioRepository.buscarAll();
             res.status(200).send(funcionarios);
         } catch{
             res.status(500).send({ message: "Erro ao buscar os funcionarios"});
         }
     }
 
-    async findOne(req: Request, res: Response){
+    /*async findOne(req: Request, res: Response){
         const id: number = parseInt(req.body.id);
 
         try{
-            const funcionario = funcionarioRepositoy.buscarById(id);
+            const funcionario = funcionarioRepository.buscarById(id);
             if(funcionario){
                 res.status(200).send(funcionario);
             } else{
@@ -51,10 +63,21 @@ export default class FuncionarioController{
         } catch (err){
             res.status(500).send({ message: "Erro ao buscar o funcionario"});
         }
-    }
+    }*/
 
     async findByCpf(req: Request, res: Response){
         const cpf = req.body.cpf;
+
+        try{
+            const funcionario = await funcionarioRepository.buscarByCpf(cpf);
+            if(funcionario){
+                res.status(200).send(funcionario);
+            } else{
+                res.status(404).send({ message: `Funcionario não encontrado com cpf=${cpf}`});
+            }
+        } catch (err){
+            res.status(500).send({ message: "Erro ao buscar o funcionario"});
+        }
     }
 
 }

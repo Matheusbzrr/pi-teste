@@ -46,7 +46,85 @@ export default class CategoriaController{
         }
     }
 
+    async findByNome(req: Request, res: Response){
+        const nomeCategoria = req.body.nome;
+        try{
+            if (!nomeCategoria) {
+                res.status(400).send({
+                    message: "É obrigatorio preencher o nome da categoria!"
+                });
+                return;
+            }
 
+            if (!nomeCategoria || typeof nomeCategoria!=='string' ) {
+                res.status(400).send({
+                    message: "Nome inválido"
+                });
+                return;
+            }
 
+            const categoria = await categoriaRepository.buscarPorNome(nomeCategoria);
+            res.status(200).json(categoria);
+            
+        } catch (err) {
+            res.status(500).send({
+                message: "Erro ao tentar buscar categoria por nome"
+            });
+        }
+
+    }
+
+    async update(req: Request, res: Response){
+        let categoria: Categoria = req.body;
+        categoria.nome = req.params.nome;
+
+        try{
+            if (!categoria.nome) {
+                res.status(400).send({
+                    message: "É obrigatorio preencher o nome da categoria!"
+                });
+                return;
+            }
+
+            if (!categoria.nome || typeof categoria.nome!=='string' ) {
+                res.status(400).send({
+                    message: "Nome inválido"
+                });
+                return;
+            }
+
+            await categoriaRepository.update(categoria);
+            res.status(200).json(categoria);
+        } catch (err){
+            res.status(500).send({
+                message: "Erro ao tentar atualizar a categoria"
+            });
+        }
+    }
+
+    async delete(req: Request, res: Response){
+        const id = parseInt(req.params.id);
+        
+        try{
+            if (!id) {
+                res.status(400).send({
+                    message: "É obrigatorio preencher o id da categoria!"
+                });
+                return;
+            }
+
+            const num = await categoriaRepository.delete(id);
+            if(num ===1){
+                res.send({message: "Categoria deletada com sucesso!"});
+            } else{
+                res.send({message: "Nenhuma categoria encontrada com esse id!"});
+            }
+            
+        }catch(err){
+            res.status(500).send({
+                message: "Erro ao tentar deletar a categoria"
+            });
+        }
+    }
 
 }

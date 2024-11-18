@@ -10,22 +10,22 @@ class CategoriaRoutes {
   }
 
   initializeRoutes() {
-    // Criar um novo serviço
+    // Criar um novo categoria
     this.router.post("/categoria", this.controller.create);
 
-    // Retornar todos os serviços já cadastrados
+    // Retornar todos os categorias já cadastrados
     this.router.get("/categorias", this.controller.findAll);
 
-    // Retorna um serviço específico pelo seu id
-    //this.router.get("/servico/:id", this.controller.findOne);
+    // Retorna um categoria específico pelo seu id
+    this.router.get("/categoria/nome", this.controller.findByNome);
 
-    // Atualizar um serviço pelo seu id
-    //this.router.put("/servico/:id", this.controller.update);
+    // Atualizar um categoria pelo seu id
+    this.router.put("/categoria/:id", this.controller.update);
 
-    // Deleta um serviço pelo seu id
-    //this.router.delete("/servico/:id", this.controller.delete);
+    // Deleta um categoria pelo seu id
+    this.router.delete("/categoria/:id", this.controller.delete);
 
-    // Deleta todos os serviços
+    // Deleta todos os categorias
     //this.router.delete("/servicos", this.controller.deleteAll);
   }
 }

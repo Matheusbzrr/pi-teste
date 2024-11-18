@@ -2,6 +2,7 @@ import { Application } from "express";
 import ClienteRoutes from "./cliente.routes";
 import ServicoRoutes from "./servico.routes";
 import CategoriaRoutes from "./categoria.routes";
+import funcionarioRoutes from "./funcionario.routes";
 
 
 // Concetrador de rotas
@@ -11,6 +12,7 @@ export default class Routs{
         app.use("/salaosenac", ClienteRoutes);
         app.use("/salaosenac", ServicoRoutes);
         app.use("/salaosenac", CategoriaRoutes);
+        app.use("/salaosenac", funcionarioRoutes);
         
        
     }

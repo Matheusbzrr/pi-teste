@@ -58,10 +58,18 @@ class ClienteRepository {
         }
     }
 
-    async update(cliente: Cliente): Promise<Cliente> {
+    async update(idCliente: number, dadosAtualizados: Partial<Cliente>): Promise<Cliente> {
         try {
-            await this.clienteRepository.save(cliente); // Adicionei await para garantir que a operação seja concluída
-            return cliente;
+            // Encontra o cliente existente
+            const clienteExistente = await this.clienteRepository.findOneBy({ idCliente });
+            if (!clienteExistente) {
+                throw new Error("Cliente não encontrado!");
+            }
+    
+            // Atualiza apenas os campos fornecidos
+            const clienteAtualizado = { ...clienteExistente, ...dadosAtualizados };
+            await this.clienteRepository.save(clienteAtualizado);
+            return clienteAtualizado;
         } catch (error) {
             throw new Error("Falha ao atualizar o cliente!");
         }
