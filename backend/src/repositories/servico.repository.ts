@@ -1,40 +1,25 @@
-import { error } from "console";
 import { AppDataSource } from "../db/data-source";
 import { Categoria } from "../models/categoria";
 import { Servico } from "../models/servico";
+
 
 
 class ServicoRepository {
     servicoRepository = AppDataSource.getRepository(Servico);
 
     // para criar um novo. utilizar a rota na area de funcionario
-    async criar(servico: Servico, categoriaId: number): Promise<Servico> {
+    async criar(servico: Servico): Promise<Servico> {
         try {
-            // Buscando a categoria pelo ID
-            const categoria = await AppDataSource.getRepository(Categoria).findOneBy({
-                idCategoria: categoriaId, // Supondo que o ID da categoria seja `idCategoria`
-            });
-    
-            if (!categoria) {
-                throw new Error("Categoria não encontrada!");
-            }
-    
-            // Associando a categoria ao serviço
-            servico.categoria = categoria;
-    
-            // Salvando o serviço
-            await this.servicoRepository.save(servico);
+            await this.servicoRepository.save(servico);  // Salvando o serviço no repositório
             return servico;
         } catch (err) {
-            throw new Error("Falha ao criar o Serviço: ");
+            throw new Error("Falha ao criar o Serviço: " + err);
         }
     }
-    
-    
 
     async buscarAll(): Promise<Servico[]> {
         try {
-            return await this.servicoRepository.find(); // Adicionei await para garantir que a operação seja concluída
+            return await this.servicoRepository.find({relations: ['categoria']}); // Adicionei await para garantir que a operação seja concluída
         } catch (error) {
             throw new Error("Falha ao retornar os Servicos!");
         }
@@ -99,5 +84,6 @@ class ServicoRepository {
         }
     }
 
-
 }
+
+export default new ServicoRepository();

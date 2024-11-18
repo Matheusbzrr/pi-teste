@@ -1,9 +1,9 @@
 import { Router } from "express";
-import ServicoController from "../controllers/servico.controller";
+import CategoriaController from "../controllers/categoria.controller";
 
-class ServicoRoutes {
+class CategoriaRoutes {
   router = Router();
-  controller = new ServicoController();
+  controller = new CategoriaController();
 
   constructor() {
     this.initializeRoutes();
@@ -11,10 +11,10 @@ class ServicoRoutes {
 
   initializeRoutes() {
     // Criar um novo serviço
-    this.router.post("/servico", this.controller.create);
+    this.router.post("/categoria", this.controller.create);
 
     // Retornar todos os serviços já cadastrados
-    this.router.get("/servicos", this.controller.findAll);
+    this.router.get("/categorias", this.controller.findAll);
 
     // Retorna um serviço específico pelo seu id
     //this.router.get("/servico/:id", this.controller.findOne);
@@ -23,11 +23,11 @@ class ServicoRoutes {
     //this.router.put("/servico/:id", this.controller.update);
 
     // Deleta um serviço pelo seu id
-    this.router.delete("/servico/:id", this.controller.delete);
+    //this.router.delete("/servico/:id", this.controller.delete);
 
     // Deleta todos os serviços
     //this.router.delete("/servicos", this.controller.deleteAll);
   }
 }
 
-export default new ServicoRoutes().router;
+export default new CategoriaRoutes().router;

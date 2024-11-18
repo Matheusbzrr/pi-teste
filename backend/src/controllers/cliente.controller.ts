@@ -5,6 +5,7 @@ import clienteRepository from "../repositories/cliente.repository";
 export default class ClienteController {
 
     async create(req: Request, res: Response) {
+        console.log('Requisição recebida:', req.body);
     
         const { nome, cpf, email, senha } = req.body;
         if (!nome || !cpf || !email || !senha) {
@@ -13,6 +14,8 @@ export default class ClienteController {
             });
             return;
         }
+
+        
 
         try {
             

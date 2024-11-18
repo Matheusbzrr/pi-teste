@@ -8,10 +8,21 @@ class CategoriaRepository {
 
     async criar(categoria: Categoria): Promise<Categoria> {
         try {
-            this.categoriaRepository.save(categoria); // Adicionei await para garantir que a operação seja concluída
-            return categoria;
+            return await this.categoriaRepository.save(categoria);
         } catch (err) {
+            console.error("Erro ao criar a categoria:", err);
             throw new Error("Falha ao criar o Categoria!");
+        }
+    }
+
+    async buscarPorNome(nome: string): Promise<Categoria | null> {
+        try {
+            return await this.categoriaRepository.findOneBy({
+                nome,
+            });
+        } catch (error) {
+            console.error("Erro ao buscar categoria por nome:", error)
+            throw new Error("Falha ao buscar o Categoria por nome!");
         }
     }
 
@@ -20,6 +31,7 @@ class CategoriaRepository {
         try {
             return await this.categoriaRepository.find(); // Adicionei await para garantir que a operação seja concluída
         } catch (error) {
+            console.error("Erro ao buscar todas as categorias:", error);
             throw new Error("Falha ao retornar os Categorias!");
         }
     }
@@ -74,3 +86,6 @@ class CategoriaRepository {
     }
 
 }
+
+
+export default new CategoriaRepository();
