@@ -8,7 +8,8 @@ categoriaRepository
 export default class FuncionarioController{
     async create(req: Request, res: Response) {
         if (!req.body.funcionario) {
-            return res.status(400).send({ message: 'Preencha corretamente por favor' });
+            res.status(400).send({ message: 'Preencha corretamente por favor' });
+            return;
         } 
     
         try{
@@ -33,6 +34,7 @@ export default class FuncionarioController{
 
             const novoFuncionario = await funcionarioRepository.criar(funcionario);
             res.status(201).send(novoFuncionario);
+           
 
         } catch (err) {
             res.status(500).send({ message: "Erro ao cadastrar o funcionario"});

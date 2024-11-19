@@ -17,11 +17,11 @@ export class Servico {
     @Column({ length: 45, nullable: true })
     descricao?: string;
 
-    @ManyToOne(() => Categoria, categoria => categoria.servicos)
+    @ManyToOne(() => Categoria, categoria => categoria.servicos, {onUpdate:'CASCADE'})
     @JoinColumn({ name: 'categoria_idcategoria' }) // Especifica a coluna de junção
     categoria!: Categoria;
 
-    @ManyToMany(() => Agendamento, agendamento => agendamento.servicos)
+    @ManyToMany(() => Agendamento, agendamento => agendamento.servicos, {onUpdate: 'CASCADE'})
     agendamentos?: Agendamento[];
 
     constructor(nome: string, valor: number, categoria: Categoria, descricao?: string) {  

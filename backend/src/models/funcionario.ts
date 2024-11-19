@@ -13,20 +13,18 @@ export class Funcionario {
     @Column({ length: 45, unique: true })
     cpf: string;
 
-    @Column({ length: 50 }) //TROCAR NO BANCO DE DADOS PARA STRING
+    @Column({ length: 50 }) // TROCAR NO BANCO DE DADOS PARA STRING
     sexo: string;
 
     @Column({ length: 45, unique: true })
     email: string;
 
-    @OneToMany(() => Agendamento, agendamento => agendamento.funcionario)
-    agendamentos!: Agendamento[];
+    @OneToMany(() => Agendamento, agendamento => agendamento.funcionario, {onUpdate: 'CASCADE'})
+    agendamentos?: Agendamento[];
 
     @ManyToMany(() => Categoria)
     @JoinTable()
     categorias?: Categoria[];
-
-   
 
     constructor(
         nome: string,

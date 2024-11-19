@@ -13,10 +13,10 @@ export class Categoria {
     @Column({ length: 100, nullable: true })
     descricao?: string;
 
-    @OneToMany(() => Servico, servico => servico.categoria)
+    @OneToMany(() => Servico, servico => servico.categoria,{onUpdate: 'CASCADE'})
     servicos!: Servico[];
 
-    @ManyToMany(() => Funcionario, funcionario => funcionario.categorias)
+    @ManyToMany(() => Funcionario, funcionario => funcionario.categorias, {onUpdate: 'CASCADE'})
     funcionarios?: Funcionario[];
     
     constructor(

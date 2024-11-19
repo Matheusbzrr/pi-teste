@@ -30,7 +30,7 @@ export class Cliente {
     @Column({ length: 45, nullable: true })
     matricula?: string;
 
-    @OneToMany(() => Agendamento, agendamento => agendamento.cliente) 
+    @OneToMany(() => Agendamento, agendamento => agendamento.cliente, {onUpdate: 'CASCADE'}) 
     agendamentos!: Agendamento[]; 
 
     constructor(
