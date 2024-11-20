@@ -9,14 +9,14 @@ export default class AgendamentoController {
   // Criar novo agendamento
   async criarAgendamento(req: Request, res: Response){
     try {
-      const { clienteId, data, horario, valorTotal, funcionarioId, servicoIds } = req.body;
+      const { idCliente, data, horario, valorTotal, idFuncionario, servicoIds } = req.body;
 
       const resultado = await agendamentoRepository.chamarAgendamentoProcedure(
-        clienteId,
+        idCliente,
         new Date(data),
         horario,
         valorTotal,
-        funcionarioId,
+        idFuncionario,
         servicoIds
       );
 

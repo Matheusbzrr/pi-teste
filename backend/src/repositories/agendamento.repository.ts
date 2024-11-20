@@ -4,16 +4,16 @@ import { Agendamento } from "../models/agendamento";
 class AgendamentoRepository {
     agendamentoRepository = AppDataSource.getRepository(Agendamento)
     async chamarAgendamentoProcedure(
-      clienteId: number,
+      idCliente: number,
       data: Date,
       horario: string,
       valorTotal: number,
-      funcionarioId?: number,
+      idFuncionario?: number,
       servicoIds?: number[]
     ): Promise<any> {
       return this.agendamentoRepository.query(
         'CALL criarAgendamento(?, ?, ?, ?, ?, ?)',
-        [clienteId, data, horario, valorTotal, funcionarioId, JSON.stringify(servicoIds)]
+        [idCliente, data, horario, valorTotal, idFuncionario, JSON.stringify(servicoIds)]
       );
     }
   
