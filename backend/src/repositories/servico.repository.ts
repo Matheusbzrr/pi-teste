@@ -18,7 +18,7 @@ class ServicoRepository {
 
     async buscarAll(): Promise<Servico[]> {
         try {
-            return await this.servicoRepository.find({relations: ['servico']}); 
+            return await this.servicoRepository.find({relations: ['categoria']}); 
         } catch (error) {
             throw new Error("Falha ao retornar os Servicos!");
         }
