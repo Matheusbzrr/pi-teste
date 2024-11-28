@@ -35,13 +35,11 @@ export default class ServicoController {
                 return;
             }
 
-            // Criação do serviço
             const servico = new Servico(nome, valor, categoria, descricao);
 
-            // Salvando o serviço
             await servicoRepository.criar(servico);
 
-            res.status(201).send(servico); // Serviço criado com sucesso
+            res.status(201).send(servico); 
             return;
         } catch (error) {
             res.status(500).send({
@@ -63,7 +61,7 @@ export default class ServicoController {
                 nome: servico.nome,
                 valor: servico.valor,
                 descricao: servico.descricao,
-                categoriaId: servico.categoria?.idCategoria, // mapeando para mostrar penas o ID da categoria pois meu repositorio ta devolvendo o objeto categoria completo
+                categoriaId: servico.categoria?.idCategoria, 
             }));
 
             res.status(200).json(resultado);
@@ -71,6 +69,22 @@ export default class ServicoController {
         } catch (err) {
             res.status(500).send({
                 message: "Erro encontrado ao buscar todos os servicos."
+            });
+        }
+    }
+
+    async update(req: Request, res: Response) {
+        const idServico = parseInt(req.params.id); 
+        const dadosAtualizados = req.body;
+    
+        try {
+            const servicoAtualizado = await servicoRepository.update(idServico, dadosAtualizados);
+            res.send({
+                message: `Categoria ${servicoAtualizado.nome} atualizado com sucesso!`
+            });
+        } catch (err) {
+            res.status(500).send({
+                message: `Erro ao atualizar o categoria com id=${idServico}.`
             });
         }
     }

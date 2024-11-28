@@ -52,7 +52,16 @@ export default class ClienteController {
         try {
             const cliente = await clienteRepository.buscarPorEmailESenha(email, senha);
             if (cliente) {
-                res.status(200).send(cliente);
+
+                const dadosEnviados = {
+                    idCliente: cliente.idCliente,
+                    nome: cliente.nome,
+                    email: cliente.email,
+                    telefone: cliente.telefone,
+                    matricula: cliente.matricula || null
+                }
+
+                res.status(200).send(dadosEnviados);
             } else {
                 res.status(401).send({
                     message: "Email ou senha inválidos."
@@ -114,28 +123,10 @@ export default class ClienteController {
         }
     }
 
-    async findByCpf(req: Request, res: Response) {
-        const cpf: string = req.params.cpf; //DADOS SENSIVEIS NAO PODEM SER PASSADOS POR PARAMETRO PRECISA PASSAR NO CORPO DO JSON
-
-        try {
-            const cliente = await clienteRepository.buscarByCpf(cpf);
-            if (cliente) {
-                res.status(200).send(cliente);
-            } else {
-                res.status(404).send({
-                    message: `Não foi encontrado nenhum cliente com o CPF=${cpf}.`
-                });
-            }
-        } catch (err) {
-            res.status(500).send({
-                message: `Erro ao tentar buscar o cliente com CPF=${cpf}.`
-            });
-        }
-    }
 
     async update(req: Request, res: Response) {
-        const idCliente = parseInt(req.params.id); // Obtém o ID da URL
-        const dadosAtualizados = req.body; // Dados que serão atualizados
+        const idCliente = parseInt(req.params.id); 
+        const dadosAtualizados = req.body;
     
         try {
             const clienteAtualizado = await clienteRepository.update(idCliente, dadosAtualizados);
@@ -149,36 +140,5 @@ export default class ClienteController {
         }
     }
 
-    async delete(req: Request, res: Response) {
-        const id: number = parseInt(req.params.id);
-
-        try {
-            const num = await clienteRepository.delete(id);
-
-            if (num === 1) {
-                res.send({
-                    message: "Cliente deletado com sucesso!"
-                });
-            } else {
-                res.send({
-                    message: `Não foi possível deletar o cliente com id=${id}. O cliente não foi encontrado.`
-                });
-            }
-        } catch (err) {
-            res.status(500).send({
-                message: `O cliente com id=${id} não pode ser deletado.`
-            });
-        }
-    }
-
-    async deleteAll(req: Request, res: Response) {
-        try {
-            const num = await clienteRepository.deleteAll();
-            res.send({ message: `${num} clientes foram deletados com sucesso!` });
-        } catch (err) {
-            res.status(500).send({
-                message: "Ocorreu um erro ao deletar todos os clientes."
-            });
-        }
-    }
+    
 }

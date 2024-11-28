@@ -12,7 +12,7 @@ export class Agendamento {
     @ManyToOne(() => Funcionario, funcionario => funcionario.agendamentos, {nullable: true, onUpdate: 'CASCADE'})
     funcionario?: Funcionario;
 
-    @ManyToOne(() => Cliente, cliente => cliente.agendamentos, {onUpdate: 'CASCADE'})
+    @ManyToOne(() => Cliente, cliente => cliente.agendamentos, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
     cliente: Cliente;
 
     @Column({ type: 'date' })
@@ -24,7 +24,7 @@ export class Agendamento {
     @Column({ type: 'decimal' })
     valorTotal: number;
 
-    @ManyToMany(() => Servico, {onUpdate: 'CASCADE'})
+    @ManyToMany(() => Servico, {onUpdate: 'CASCADE', onDelete: 'CASCADE'})
     @JoinTable()
     servicos?: Servico[];
  

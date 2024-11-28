@@ -43,7 +43,7 @@ export default class FuncionarioController{
     
 
 
-    async findAll(req: Request, res: Response) { // apagar request pq n ta sendo chamado 
+    async findAll(req: Request, res: Response) {
         try{
             const funcionarios = await funcionarioRepository.buscarAll();
             res.status(200).send(funcionarios);
@@ -52,20 +52,7 @@ export default class FuncionarioController{
         }
     }
 
-    /*async findOne(req: Request, res: Response){
-        const id: number = parseInt(req.body.id);
-
-        try{
-            const funcionario = funcionarioRepository.buscarById(id);
-            if(funcionario){
-                res.status(200).send(funcionario);
-            } else{
-                res.status(404).send({ message: `Funcionario não encontrado com id=${id}`});
-            }
-        } catch (err){
-            res.status(500).send({ message: "Erro ao buscar o funcionario"});
-        }
-    }*/
+    
 
     async findByCpf(req: Request, res: Response){
         const cpf = req.body.cpf;
@@ -79,6 +66,22 @@ export default class FuncionarioController{
             }
         } catch (err){
             res.status(500).send({ message: "Erro ao buscar o funcionario"});
+        }
+    }
+
+    async update(req: Request, res: Response) {
+        const idFuncionario = parseInt(req.params.id); 
+        const dadosAtualizados = req.body;
+    
+        try {
+            const funcionarioAtualizado = await funcionarioRepository.update(idFuncionario, dadosAtualizados);
+            res.send({
+                message: `Categoria ${funcionarioAtualizado.nome} atualizado com sucesso!`
+            });
+        } catch (err) {
+            res.status(500).send({
+                message: `Erro ao atualizar o categoria com id=${idFuncionario}.`
+            });
         }
     }
 

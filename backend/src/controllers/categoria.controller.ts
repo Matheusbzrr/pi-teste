@@ -74,30 +74,18 @@ export default class CategoriaController{
 
     }
 
-    async update(req: Request, res: Response){
-        let categoria: Categoria = req.body;
-        categoria.nome = req.params.nome;
-
-        try{
-            if (!categoria.nome) {
-                res.status(400).send({
-                    message: "É obrigatorio preencher o nome da categoria!"
-                });
-                return;
-            }
-
-            if (!categoria.nome || typeof categoria.nome!=='string' ) {
-                res.status(400).send({
-                    message: "Nome inválido"
-                });
-                return;
-            }
-
-            await categoriaRepository.update(categoria);
-            res.status(200).json(categoria);
-        } catch (err){
+    async update(req: Request, res: Response) {
+        const idCategoria = parseInt(req.params.id); 
+        const dadosAtualizados = req.body;
+    
+        try {
+            const categoriaAtualizada = await categoriaRepository.update(idCategoria, dadosAtualizados);
+            res.send({
+                message: `Categoria ${categoriaAtualizada.nome} atualizado com sucesso!`
+            });
+        } catch (err) {
             res.status(500).send({
-                message: "Erro ao tentar atualizar a categoria"
+                message: `Erro ao atualizar o categoria com id=${idCategoria}.`
             });
         }
     }

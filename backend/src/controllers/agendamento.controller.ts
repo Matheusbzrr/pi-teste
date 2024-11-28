@@ -1,12 +1,8 @@
 import { Request, Response } from 'express';
-import { AppDataSource } from '../db/data-source';
-import { Agendamento } from '../models/agendamento';
 import agendamentoRepository from '../repositories/agendamento.repository';
 
 export default class AgendamentoController {
 
-
-  // Criar novo agendamento
   async criarAgendamento(req: Request, res: Response){
     try {
       const { idCliente, data, horario, valorTotal, idFuncionario, servicoIds } = req.body;
@@ -28,6 +24,57 @@ export default class AgendamentoController {
       return ;
     }
   }
+
+  async update(req: Request, res: Response) {
+    const idAgendamento = parseInt(req.params.id); 
+    const dadosAtualizados = req.body;
+
+    try {
+        const agendamentoAtualizado = await agendamentoRepository.update(idAgendamento, dadosAtualizados);
+        res.send({
+            message: `Categoria ${agendamentoAtualizado.idAgendamento} atualizado com sucesso!`
+        });
+    } catch (err) {
+        res.status(500).send({
+            message: `Erro ao atualizar o categoria com id=${idAgendamento}.`
+        });
+    }
+}
+
+async findAll(req: Request, res: Response) {
+  try{
+      const agendamentos = await agendamentoRepository.buscarAll();
+      res.status(200).send(agendamentos);
+  } catch{
+      res.status(500).send({ message: "Erro ao buscar os agendamentos"});
+  }
+}
+
+
+  async delete(req: Request, res: Response){
+    const id = parseInt(req.params.id);
+    
+    try{
+        if (!id) {
+            res.status(400).send({
+                message: "É obrigatorio preencher o id do agendamento!"
+            });
+            return;
+        }
+
+        const num = await agendamentoRepository.delete(id);
+        if(num ===1){
+            res.send({message: "Agendamento deletado com sucesso!"});
+        } else{
+            res.send({message: "Nenhum agendamento encontrado com esse id!"});
+        }
+        
+    }catch(err){
+        res.status(500).send({
+            message: "Erro ao tentar deletar o agendamento"
+        });
+    }
+}
 }
 
       // Obter todos os agendamentos

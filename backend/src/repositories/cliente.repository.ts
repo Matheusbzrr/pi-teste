@@ -6,7 +6,7 @@ class ClienteRepository {
 
     async criar(cliente: Cliente): Promise<Cliente> {
         try {
-            this.clienteRepository.save(cliente); // Adicionei await para garantir que a operação seja concluída
+            this.clienteRepository.save(cliente);
             return cliente;
         } catch (err) {
             throw new Error("Falha ao criar o cliente!");
@@ -17,7 +17,7 @@ class ClienteRepository {
 
     async buscarAll(): Promise<Cliente[]> {
         try {
-            return await this.clienteRepository.find(); // Adicionei await para garantir que a operação seja concluída
+            return await this.clienteRepository.find(); 
         } catch (error) {
             throw new Error("Falha ao retornar os clientes!");
         }
@@ -28,7 +28,7 @@ class ClienteRepository {
             const cliente = await this.clienteRepository.findOneBy({
                 idCliente: clienteId,
             });
-            return cliente || null; // Retorna null se o cliente não for encontrado
+            return cliente || null; 
         } catch (error) {
             throw new Error("Falha ao buscar o cliente por ID!");
         }
@@ -48,26 +48,26 @@ class ClienteRepository {
         try {
             const cliente = await this.clienteRepository.findOneBy({ email });
             if (cliente) {
-                return cliente; // Retorna o cliente encontrado
+                return cliente; 
             } else {
-                return null; // Cliente não encontrado, retorno esperado
+                return null;
             }
         } catch (error) {
-            // Aqui o erro capturado é inesperado (ex: problema de banco, conexão)
+            
             throw new Error(`Erro ao buscar o cliente com CPF ${email}`);
         }
     }
 
     async update(idCliente: number, dadosAtualizados: Partial<Cliente>): Promise<Cliente> {
         try {
-            // Encontra o cliente existente
+           
             const clienteExistente = await this.clienteRepository.findOneBy({ idCliente });
             if (!clienteExistente) {
                 throw new Error("Cliente não encontrado!");
             }
     
-            // Atualiza apenas os campos fornecidos
-            const clienteAtualizado = { ...clienteExistente, ...dadosAtualizados };
+            
+            const clienteAtualizado = { ...clienteExistente, ...dadosAtualizados }; //mescla os dados
             await this.clienteRepository.save(clienteAtualizado);
             return clienteAtualizado;
         } catch (error) {
@@ -75,37 +75,10 @@ class ClienteRepository {
         }
     }
 
-    async delete(clienteId: number): Promise<number> {
-        try {
-            const clienteEncontrado = await this.clienteRepository.findOneBy({
-                idCliente: clienteId,
-            });
-            if (clienteEncontrado) {
-                await this.clienteRepository.remove(clienteEncontrado); // Adicionei await para garantir que a operação seja concluída
-                return 1; // Cliente deletado com sucesso
-            }
-            return 0; // Cliente não encontrado
-        } catch (error) {
-            throw new Error("Falha ao deletar o cliente!");
-        }
-    }
-
-    async deleteAll(): Promise<number> {
-        try {
-            // Executa a query para contar os registros antes da deleção
-            const result = await this.clienteRepository.query("select count(idCliente) as total from Cliente;");
-            await this.clienteRepository.query("delete from Cliente;"); // Adicionei await para garantir que a operação seja concluída
-            const num = result[0]?.total || 0; 
-            return num; // Retorna o número de clientes deletados
-        } catch (error) {
-            throw new Error("Falha ao deletar todos os clientes!");
-        }
-    }
-
     async buscarPorEmailESenha(email: string, senha: string): Promise<Cliente | null> {
         try{
             const cliente = await this.clienteRepository.findOneBy({email, senha});
-            return cliente || null; // Retorna null se o cliente não for encontrado
+            return cliente || null; 
         } catch (error) {
             throw new Error("Falha ao buscar o cliente por email e senha!");
         }

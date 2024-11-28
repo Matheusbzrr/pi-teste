@@ -1,5 +1,4 @@
 import { AppDataSource } from "../db/data-source";
-import { Categoria } from "../models/categoria";
 import { Servico } from "../models/servico";
 
 
@@ -19,7 +18,7 @@ class ServicoRepository {
 
     async buscarAll(): Promise<Servico[]> {
         try {
-            return await this.servicoRepository.find({relations: ['categoria']}); // Adicionei await para garantir que a operação seja concluída
+            return await this.servicoRepository.find({relations: ['servico']}); // Adicionei await para garantir que a operação seja concluída
         } catch (error) {
             throw new Error("Falha ao retornar os Servicos!");
         }
@@ -48,12 +47,23 @@ class ServicoRepository {
     }
 
 
-    async update(servico: Servico): Promise<Servico> {
+    async update(idServico: number, dadosAtualizados: Partial<Servico>): Promise<Servico> {
         try {
-            await this.servicoRepository.save(servico); // Adicionei await para garantir que a operação seja concluída
-            return servico;
+
+            const servicoExistente = await this.servicoRepository.findOneBy({
+                idServico: idServico,
+            });
+
+            if (!servicoExistente) {
+                throw new Error("servico não encontrada!");
+            }
+
+            const servicoAtualizada = { ...servicoExistente, ...dadosAtualizados}
+            await this.servicoRepository.save(servicoAtualizada);
+            return servicoAtualizada; 
+
         } catch (error) {
-            throw new Error("Falha ao atualizar o Servico!");
+            throw new Error("Falha ao atualizar o servico!");
         }
     }
 

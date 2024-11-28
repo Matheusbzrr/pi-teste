@@ -12,7 +12,17 @@ class AgendamentoRoutes{
 
 
     initializeRoutes(){
+        // Cria um novo agendamento
         this.router.post("/agendamento", this.controller.criarAgendamento);
+
+        // Buscar todos agendamentos
+        this.router.get("/agendamentos", this.controller.findAll);
+
+        // Atualizar um agendamento
+        this.router.put("/agendamento/:id", this.controller.update);
+
+        // Deleta um agendamento
+        this.router.delete("/agendamento/:id", this.controller.delete);
     }
 }
 

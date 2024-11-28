@@ -54,14 +54,26 @@ class FuncionarioRepository {
         }
     }
 
-    async update(funcionario: Funcionario): Promise<Funcionario | null>{
-        try{
-            await this.funcionarioRepository.save(funcionario);
-            return funcionario;
-        } catch(err){
-            throw new Error('Erro ao atualizar funcionario: ');
+    async update(idFuncionario: number, dadosAtualizados: Partial<Funcionario>): Promise<Funcionario> {
+        try {
+
+            const funcionarioExistente = await this.funcionarioRepository.findOneBy({
+                idFuncionario: idFuncionario,
+            });
+
+            if (!funcionarioExistente) {
+                throw new Error("Categoria não encontrada!");
+            }
+
+            const funcionarioAtualizado = { ...funcionarioExistente, ...dadosAtualizados}
+            await this.funcionarioRepository.save(funcionarioAtualizado);
+            return funcionarioAtualizado; 
+
+        } catch (error) {
+            throw new Error("Falha ao atualizar o Categoria!");
         }
     }
+
 
     async delete(funcionarioId: number): Promise<number>{
         try{
@@ -91,6 +103,8 @@ class FuncionarioRepository {
             throw new Error('Erro ao deletar todos os funcionarios: ');
         }
     }
+
+    
 
 }
 
