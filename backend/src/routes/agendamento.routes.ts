@@ -23,6 +23,10 @@ class AgendamentoRoutes{
 
         // Deleta um agendamento
         this.router.delete("/agendamento/:id", this.controller.delete);
+
+        this.router.get("/agendamentos/todos", this.controller.buscarTodosComPrc);
+
+        this.router.get("/agendamentos/cliente/:id", this.controller.buscarPorIdClienteComPrc);
     }
 }
 

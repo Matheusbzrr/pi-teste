@@ -97,16 +97,16 @@ export default class ServicoController {
 
             if (num === 1) {
                 res.send({
-                    message: "Cliente deletado com sucesso!"
+                    message: "Serviço deletado com sucesso!"
                 });
             } else {
                 res.send({
-                    message: `Não foi possível deletar o cliente com id=${id}. O cliente não foi encontrado.`
+                    message: `Não foi possível deletar o serviço com id=${id}. O serviço não foi encontrado.`
                 });
             }
         } catch (err) {
             res.status(500).send({
-                message: `O cliente com id=${id} não pode ser deletado.`
+                message: `O serviço com id=${id} não pode ser deletado.`
             });
         }
     }

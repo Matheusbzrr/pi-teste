@@ -10,40 +10,47 @@ class AgendamentoRepository {
       valorTotal: number,
       idFuncionario?: number,
       servicoIds?: number[]
-    ): Promise<any> {
+    ): Promise<JSON> {
       return this.agendamentoRepository.query(
         'CALL criarAgendamento(?, ?, ?, ?, ?, ?)',
         [idCliente, data, horario, valorTotal, idFuncionario, JSON.stringify(servicoIds)]
       );
     }
 
-    async update(idAgendamento: number, dadosAtualizados: Partial<Agendamento>): Promise<Agendamento> {
-      try {
-
-          const agendamentoExistente = await this.agendamentoRepository.findOneBy({
-              idAgendamento: idAgendamento,
-          });
-
-          if (!agendamentoExistente) {
-              throw new Error("Categoria não encontrada!");
-          }
-
-          const agendamentoAtualizado = { ...agendamentoExistente, ...dadosAtualizados}
-          await this.agendamentoRepository.save(agendamentoAtualizado);
-          return agendamentoAtualizado; 
-
-        } catch (error) {
-          throw new Error("Falha ao atualizar o Categoria!");
-        }
-    }
-
-    async buscarAll(): Promise<Agendamento[]> {
+    async findAll(): Promise<Agendamento[]> {
         try{
             return await this.agendamentoRepository.find();
         } catch(err){
-            throw new Error('Erro ao listar funcionarios: ');
+            throw new Error('Erro ao listar agendamentos: ');
         }
     }
+
+
+    async buscarTodosComProcedure(): Promise<JSON>{
+        try{
+            const agendamentos = await this.agendamentoRepository.query(
+                'CALL ObterTodosAgendamentos()'
+            );
+            return agendamentos;
+        } catch{
+            throw new Error('Erro ao buscar agendamentos com procedures!');
+        }
+        
+    }
+
+    async buscarPorIdClienteComProcedure(idCliente: number): Promise<JSON> {
+        try{
+            const agendamentos = await this.agendamentoRepository.query(
+                'CALL ObterAgendamentosPorCliente(?)',
+                [idCliente]
+            );
+            return agendamentos;
+        } catch{
+            throw new Error('Erro ao buscar agendamentos com procedures!');
+        }        
+
+    }       
+    
 
         async delete(idAgendamento: number): Promise<number> {
         try {
@@ -56,9 +63,31 @@ class AgendamentoRepository {
             }
             return 0; 
         } catch (error) {
-            throw new Error("Falha ao deletar o Categoria!");
+            throw new Error("Falha ao deletar o Agendamento!");
         }
     }
+
+    async update(idAgendamento: number, dadosAtualizados: Partial<Agendamento>): Promise<Agendamento> {
+      try {
+
+          const agendamentoExistente = await this.agendamentoRepository.findOneBy({
+              idAgendamento: idAgendamento,
+          });
+
+          if (!agendamentoExistente) {
+              throw new Error("Agendamento não encontrada!");
+          }
+
+          const agendamentoAtualizado = { ...agendamentoExistente, ...dadosAtualizados}
+          await this.agendamentoRepository.save(agendamentoAtualizado);
+          return agendamentoAtualizado; 
+
+        } catch (error) {
+          throw new Error("Falha ao atualizar o Agendamento!");
+        }
+    }
+
+    
   
 }
   

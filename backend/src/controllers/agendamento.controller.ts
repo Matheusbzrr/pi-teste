@@ -25,6 +25,40 @@ export default class AgendamentoController {
     }
   }
 
+  async findAll(req: Request, res: Response) {
+    try{
+        const agendamentos = await agendamentoRepository.findAll();
+        res.status(200).send(agendamentos);
+    } catch{
+        res.status(500).send({ message: "Erro ao buscar os agendamentos"});
+    }
+  }
+
+  async buscarTodosComPrc(req: Request, res: Response) {
+    try{
+        const agendamentos = await agendamentoRepository.buscarTodosComProcedure();
+        res.status(200).send(agendamentos);
+    } catch{
+        res.status(500).send({ message: "Erro ao buscar todos os agendamentos"});
+    }
+  }
+
+  async buscarPorIdClienteComPrc(req: Request, res: Response) {
+    try{
+      const idCliente = parseInt(req.params.id);
+      const agendamentos = await agendamentoRepository.buscarPorIdClienteComProcedure(idCliente);
+
+      res.status(200).send(agendamentos);
+      return;
+
+    } catch{
+      res.status(500).send({ message: "Erro ao buscar agendamentos por id do cliente"});
+    }
+    
+  }
+
+
+
   async update(req: Request, res: Response) {
     const idAgendamento = parseInt(req.params.id); 
     const dadosAtualizados = req.body;
@@ -32,23 +66,15 @@ export default class AgendamentoController {
     try {
         const agendamentoAtualizado = await agendamentoRepository.update(idAgendamento, dadosAtualizados);
         res.send({
-            message: `Categoria ${agendamentoAtualizado.idAgendamento} atualizado com sucesso!`
+            message: `Agendamento ${agendamentoAtualizado.idAgendamento} atualizado com sucesso!`
         });
         } catch (err) {
           res.status(500).send({
-            message: `Erro ao atualizar o categoria com id=${idAgendamento}.`
+            message: `Erro ao atualizar o agendamento com id=${idAgendamento}.`
           });
         }
   } 
 
-  async findAll(req: Request, res: Response) {
-    try{
-        const agendamentos = await agendamentoRepository.buscarAll();
-        res.status(200).send(agendamentos);
-    } catch{
-        res.status(500).send({ message: "Erro ao buscar os agendamentos"});
-    }
-  }
 
 
   async delete(req: Request, res: Response){
