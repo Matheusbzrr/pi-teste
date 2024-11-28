@@ -6,10 +6,10 @@ import { Servico } from "../models/servico";
 class ServicoRepository {
     servicoRepository = AppDataSource.getRepository(Servico);
 
-    // para criar um novo. utilizar a rota na area de funcionario
+    
     async criar(servico: Servico): Promise<Servico> {
         try {
-            await this.servicoRepository.save(servico);  // Salvando o serviço no repositório
+            await this.servicoRepository.save(servico); 
             return servico;
         } catch (err) {
             throw new Error("Falha ao criar o Serviço: " + err);
@@ -18,7 +18,7 @@ class ServicoRepository {
 
     async buscarAll(): Promise<Servico[]> {
         try {
-            return await this.servicoRepository.find({relations: ['servico']}); // Adicionei await para garantir que a operação seja concluída
+            return await this.servicoRepository.find({relations: ['servico']}); 
         } catch (error) {
             throw new Error("Falha ao retornar os Servicos!");
         }
@@ -29,7 +29,7 @@ class ServicoRepository {
             const Servico = await this.servicoRepository.findOneBy({
                 idServico: servicoId,
             });
-            return Servico || null; // Retorna null se o Servico não for encontrado
+            return Servico || null;
         } catch (error) {
             throw new Error("Falha ao buscar o Servico por ID!");
         }
@@ -40,7 +40,7 @@ class ServicoRepository {
             const Servico = await this.servicoRepository.findOneBy({
                 nome: nome
             });
-            return Servico || null; // Retorna null se o Servico não for encontrado
+            return Servico || null; 
         } catch (error) {
             throw new Error("Falha ao buscar o Servico por nome!");
         }
@@ -73,10 +73,10 @@ class ServicoRepository {
                 idServico: servicoId,
             });
             if (ServicoEncontrado) {
-                await this.servicoRepository.remove(ServicoEncontrado); // Adicionei await para garantir que a operação seja concluída
-                return 1; // Servico deletado com sucesso
+                await this.servicoRepository.remove(ServicoEncontrado); 
+                return 1; 
             }
-            return 0; // Servico não encontrado
+            return 0;
         } catch (error) {
             throw new Error("Falha ao deletar o Servico!");
         }

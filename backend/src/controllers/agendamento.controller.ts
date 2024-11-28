@@ -34,21 +34,21 @@ export default class AgendamentoController {
         res.send({
             message: `Categoria ${agendamentoAtualizado.idAgendamento} atualizado com sucesso!`
         });
-    } catch (err) {
-        res.status(500).send({
+        } catch (err) {
+          res.status(500).send({
             message: `Erro ao atualizar o categoria com id=${idAgendamento}.`
-        });
-    }
-}
+          });
+        }
+  } 
 
-async findAll(req: Request, res: Response) {
-  try{
-      const agendamentos = await agendamentoRepository.buscarAll();
-      res.status(200).send(agendamentos);
-  } catch{
-      res.status(500).send({ message: "Erro ao buscar os agendamentos"});
+  async findAll(req: Request, res: Response) {
+    try{
+        const agendamentos = await agendamentoRepository.buscarAll();
+        res.status(200).send(agendamentos);
+    } catch{
+        res.status(500).send({ message: "Erro ao buscar os agendamentos"});
+    }
   }
-}
 
 
   async delete(req: Request, res: Response){
@@ -74,16 +74,6 @@ async findAll(req: Request, res: Response) {
             message: "Erro ao tentar deletar o agendamento"
         });
     }
-}
+  }
 }
 
-      // Obter todos os agendamentos
-     /* async listarAgendamentos(req: Request, res: Response): Promise<Response> {
-        try {
-          const agendamentos = await agendamentoRepository.find();
-          return res.status(200).json(agendamentos);
-        } catch (erro) {
-          console.error(erro);
-          return res.status(500).json({ mensagem: 'Erro ao listar agendamentos', erro });
-        }
-      }*/
