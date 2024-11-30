@@ -57,7 +57,45 @@ export default class AgendamentoController {
     
   }
 
+  async recentesComPrc(req: Request, res: Response) {
+    try{
+        const agendamentos = await agendamentoRepository.obterMaisRecentesComProcedure()
+        res.status(200).send(agendamentos);
+    } catch{
+        res.status(500).send({ message: "Erro ao buscar os agendamentos mais recentes"});
+    }
+  }
 
+
+  async atualizarAgendamentoPrc(req: Request, res: Response){
+    try {
+        const idAgendamento = parseInt(req.params.id);
+        const { data, horario, idFuncionario } = req.body;
+
+        if (isNaN(idAgendamento)) {
+            res.status(400).send({ message: 'ID de agendamento inválido.' });
+            return;
+        }
+
+        await agendamentoRepository.atualizarComProcedure(
+            idAgendamento,
+            data || null,  
+            horario || null,  
+            idFuncionario !== undefined ? idFuncionario : null 
+        );
+
+          res.status(200).send({
+            message: `Agendamento ${idAgendamento} atualizado com sucesso!`
+          });
+          return; 
+    } catch (error) {
+        console.error('Erro ao atualizar agendamento:', error);
+          res.status(500).send({
+            message: 'Erro ao atualizar agendamento.',
+          });
+          return; 
+    }
+  }
 
   async update(req: Request, res: Response) {
     const idAgendamento = parseInt(req.params.id); 
@@ -65,7 +103,7 @@ export default class AgendamentoController {
 
     try {
         const agendamentoAtualizado = await agendamentoRepository.update(idAgendamento, dadosAtualizados);
-        res.send({
+        res.status(200).send({
             message: `Agendamento ${agendamentoAtualizado.idAgendamento} atualizado com sucesso!`
         });
         } catch (err) {
@@ -73,7 +111,20 @@ export default class AgendamentoController {
             message: `Erro ao atualizar o agendamento com id=${idAgendamento}.`
           });
         }
-  } 
+  }
+  
+  async deletarComPrc(req: Request, res: Response) {
+    const idAgendamento = parseInt(req.params.id);
+    
+    try {
+      await agendamentoRepository.deletarComProcedure(idAgendamento);
+      res.status(200).send({ message: "Agendamento deletado com sucesso!" });
+      return;
+    } catch(err){
+        res.status(500).send({ message: `Erro ao atualizar o agendamento com id=${idAgendamento}.`
+      });
+    }
+  }
 
 
 

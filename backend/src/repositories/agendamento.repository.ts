@@ -49,23 +49,35 @@ class AgendamentoRepository {
             throw new Error('Erro ao buscar agendamentos com procedures!');
         }        
 
-    }       
-    
+    }
 
-        async delete(idAgendamento: number): Promise<number> {
-        try {
-            const agendamentoEncontrado = await this.agendamentoRepository.findOneBy({
-                idAgendamento: idAgendamento,
-            });
-            if (agendamentoEncontrado) {
-                await this.agendamentoRepository.remove(agendamentoEncontrado); 
-                return 1; 
-            }
-            return 0; 
-        } catch (error) {
-            throw new Error("Falha ao deletar o Agendamento!");
+    async obterMaisRecentesComProcedure(): Promise<any>{
+        try{
+            const agendamentos = await this.agendamentoRepository.query(
+                'CALL ObterAgendamentosRecentes()'
+            );
+            return agendamentos;
+        } catch{
+            throw new Error('Erro ao buscar agendamentos com procedures!');
         }
     }
+    
+    async atualizarComProcedure(idAgendamento: number, data: Date, horario: string,funcionarioIdFuncionario: number): Promise<any> {
+        
+    
+        await this.agendamentoRepository.query(
+            `CALL AtualizaAgendamento(?, ?, ?, ?)`,
+            [
+                idAgendamento,
+                data || null,  
+                horario || null,
+                funcionarioIdFuncionario !== undefined ? funcionarioIdFuncionario : null
+            ]
+        );
+    
+        return "ok";
+    }
+
 
     async update(idAgendamento: number, dadosAtualizados: Partial<Agendamento>): Promise<Agendamento> {
       try {
@@ -84,6 +96,34 @@ class AgendamentoRepository {
 
         } catch (error) {
           throw new Error("Falha ao atualizar o Agendamento!");
+        }
+    }
+
+    async deletarComProcedure(idCliente: number): Promise<any> {
+        try{
+            await this.agendamentoRepository.query(
+                'CALL DeletarAgendamento(?)',
+                [idCliente]
+            );
+            return "ok";
+        } catch{
+            throw new Error('Erro ao deletar agendamentos com procedures!');
+        }        
+
+    }
+
+    async delete(idAgendamento: number): Promise<number> {
+        try {
+            const agendamentoEncontrado = await this.agendamentoRepository.findOneBy({
+                idAgendamento: idAgendamento,
+            });
+            if (agendamentoEncontrado) {
+                await this.agendamentoRepository.remove(agendamentoEncontrado); 
+                return 1; 
+            }
+            return 0; 
+        } catch (error) {
+            throw new Error("Falha ao deletar o Agendamento!");
         }
     }
 

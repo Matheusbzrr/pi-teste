@@ -79,7 +79,7 @@ export default class ServicoController {
     
         try {
             const servicoAtualizado = await servicoRepository.update(idServico, dadosAtualizados);
-            res.send({
+            res.status(200).end({
                 message: `Categoria ${servicoAtualizado.nome} atualizado com sucesso!`
             });
         } catch (err) {
@@ -96,11 +96,11 @@ export default class ServicoController {
             const num = await servicoRepository.delete(id);
 
             if (num === 1) {
-                res.send({
+                res.status(200).send({
                     message: "Serviço deletado com sucesso!"
                 });
             } else {
-                res.send({
+                res.status(500).send({
                     message: `Não foi possível deletar o serviço com id=${id}. O serviço não foi encontrado.`
                 });
             }
