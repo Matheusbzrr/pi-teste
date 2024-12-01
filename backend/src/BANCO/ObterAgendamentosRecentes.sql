@@ -5,25 +5,28 @@ delimiter $$
 create procedure ObterAgendamentosRecentes()
 begin
     select 
-        a.idagendamento,
+        a.idAgendamento,
         a.data,
         a.horario,
-        a.valortotal,
-        c.idcliente,
-        c.nome as nomecliente,
+        a.valorTotal,
+        c.idCliente,
+        c.nome as nomeCliente,
         c.email,
         c.telefone,
-        f.idfuncionario,
-        coalesce(f.nome, 'profissional não selecionado') as nomefuncionario,
-        group_concat(s.nome separator ', ') as servicosassociados
+        f.idFuncionario,
+        coalesce(f.nome, 'profissional não selecionado') as nomeFuncionario,
+        group_concat(s.nome separator ', ') as servicosAssociados
     from agendamento a
-    inner join cliente c on a.clienteidcliente = c.idcliente
-    left join funcionario f on a.funcionarioidfuncionario = f.idfuncionario
-    left join agendamento_servicos_servico ass on a.idagendamento = ass.agendamentoidagendamento
-    left join servico s on ass.servicoidservico = s.idservico
-    group by a.idagendamento, a.data, a.horario, a.valortotal, c.idcliente, c.nome, c.email, c.telefone, f.idfuncionario, f.nome
+    inner join cliente c on a.clienteIdCliente = c.idCliente
+    left join funcionario f on a.funcionarioIdFuncionario = f.idFuncionario
+    left join agendamento_servicos_servico ass on a.idAgendamento = ass.agendamentoIdAgendamento
+    left join servico s on ass.servicoIdServico = s.idServico
+	where concat(a.data, ' ', a.horario) >= now()
+    group by a.idAgendamento, a.data, a.horario, a.valorTotal, c.idCliente, c.nome, c.email, c.telefone, f.idFuncionario, f.nome
     order by a.data, a.horario
     limit 6;
 end $$
 
 delimiter ;
+
+call ObterAgendamentosRecentes();
