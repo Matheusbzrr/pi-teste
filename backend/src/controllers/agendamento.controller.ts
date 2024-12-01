@@ -9,7 +9,7 @@ export default class AgendamentoController {
 
       const resultado = await agendamentoRepository.chamarAgendamentoProcedure(
         idCliente,
-        new Date(data),
+        data,
         horario,
         valorTotal,
         idFuncionario,

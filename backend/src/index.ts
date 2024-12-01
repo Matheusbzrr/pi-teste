@@ -10,7 +10,7 @@ export default class Server {
     }
 
     private config(app: Application): void {
-        const allowedOrigins = ["http://127.0.0.1:5501", "http://localhost:8080"];
+        const allowedOrigins = ["http://127.0.0.1:5502", "http://localhost:8080"];
         
         const corsOptions: CorsOptions = {
             origin: function (origin, callback) {

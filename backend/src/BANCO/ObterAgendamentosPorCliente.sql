@@ -1,27 +1,29 @@
+use salaosenac;
+
 delimiter $$
 
-create procedure ObterAgendamentosPorCliente(in p_idCliente INT)
-    begin
-        select 
-            a.idAgendamento,
-            a.data,
-            a.horario,
-            a.valorTotal,
-            c.idCliente,
-            c.nome as nomeCliente,
-            c.email,
-            c.telefone,
-            f.idFuncionario,
-            f.nome nomeFuncionario,
-            GROUP_CONCAT(s.nome SEPARATOR ', ') as servicosAssociados
-        from agendamento a
-            inner join cliente c on a.clienteIdCliente = c.idCliente
-            inner join funcionario f on a.funcionarioIdFuncionario = f.idFuncionario
-                left join agendamento_servicos_servico ass Oon a.idAgendamento = ass.agendamentoIdAgendamento
-                left join servico s on ass.servicoIdServico = s.idServico
-        where c.idCliente = p_idCliente
-            group by a.idAgendamento
-                order by a.data desc, a.horario desc;
-    end$$
+create procedure ObterAgendamentosPorCliente(in p_idcliente int)
+begin
+    select 
+        a.idagendamento,
+        a.data,
+        a.horario,
+        a.valortotal,
+        c.idcliente,
+        c.nome as nomecliente,
+        c.email,
+        c.telefone,
+        f.idfuncionario,
+        coalesce(f.nome, 'profissional não selecionado') as nomefuncionario,
+        group_concat(s.nome separator ', ') as servicosassociados
+    from agendamento a
+    inner join cliente c on a.clienteidcliente = c.idcliente
+    left join funcionario f on a.funcionarioidfuncionario = f.idfuncionario
+    left join agendamento_servicos_servico ass on a.idagendamento = ass.agendamentoidagendamento
+    left join servico s on ass.servicoidservico = s.idservico
+    where c.idcliente = p_idcliente
+    group by a.idagendamento
+    order by a.data, a.horario;
+end$$
 
 delimiter ;
