@@ -124,6 +124,42 @@ export default class ClienteController {
     }
 
 
+    async AtualizaComProcedure(req: Request, res: Response){
+        try {
+            const idCliente = parseInt(req.params.id);
+            const { nome, data_nasc, cpf, email, sexo, telefone, senha, matricula } = req.body;
+    
+            if (isNaN(idCliente)) {
+                res.status(400).send({ message: 'ID de cliente inválido.' });
+                return;
+            }
+    
+            await clienteRepository.AtualizaClienteComPrc(
+                idCliente,
+                nome || null,
+                data_nasc || null,
+                cpf || null,
+                email || null,
+                sexo || null,
+                telefone || null,
+                senha || null,
+                matricula || null
+            );
+    
+              res.status(200).send({
+                message: `Cliente ${idCliente} atualizado com sucesso!`
+              });
+              return; 
+        } catch (error) {
+            console.error('Erro ao atualizar cliente:', error);
+              res.status(500).send({
+                message: 'Erro ao atualizar cliente.',
+              });
+              return; 
+        }
+    }
+
+
     async update(req: Request, res: Response) {
         const idCliente = parseInt(req.params.id); 
         const dadosAtualizados = req.body;
@@ -139,6 +175,8 @@ export default class ClienteController {
             });
         }
     }
+
+
 
     
 }

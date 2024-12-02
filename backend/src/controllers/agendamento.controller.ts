@@ -7,7 +7,7 @@ export default class AgendamentoController {
     try {
       const { idCliente, data, horario, valorTotal, idFuncionario, servicoIds } = req.body;
 
-      const resultado = await agendamentoRepository.chamarAgendamentoProcedure(
+      const resultado = await agendamentoRepository.criarAgendamentoProcedure(
         idCliente,
         data,
         horario,

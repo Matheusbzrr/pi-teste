@@ -58,6 +58,26 @@ class ClienteRepository {
         }
     }
 
+    async AtualizaClienteComPrc(
+        idCliente: number, 
+        nome: string,
+        data_nasc: Date,
+        cpf: string,
+        email: string,
+        sexo: string,
+        telefone: string,
+        senha: string,
+        matricula?: string
+    ): Promise<any>{
+        
+            await this.clienteRepository.query(
+                'CALL AtualizaCliente(?,?,?,?,?,?,?,?,?)', 
+                [idCliente, nome || null, data_nasc || null, cpf || null, email || null, sexo || null, telefone || null, senha || null, matricula || null]
+            );
+            return "cliente atualizado com sucesso";
+        
+    }
+
     async update(idCliente: number, dadosAtualizados: Partial<Cliente>): Promise<Cliente> {
         try {
            

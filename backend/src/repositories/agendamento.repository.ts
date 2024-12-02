@@ -3,7 +3,7 @@ import { Agendamento } from "../models/agendamento";
 
 class AgendamentoRepository {
     agendamentoRepository = AppDataSource.getRepository(Agendamento)
-    async chamarAgendamentoProcedure(
+    async criarAgendamentoProcedure(
       idCliente: number,
       data: Date,
       horario: string,

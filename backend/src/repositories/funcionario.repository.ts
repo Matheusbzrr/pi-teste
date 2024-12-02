@@ -13,6 +13,24 @@ class FuncionarioRepository {
         }
     }
 
+    async cadastrarFuncionarioPrc(
+        nome: string,
+        cpf: string,
+        sexo: string,
+        email: string,
+        categorias: number[]
+    ): Promise<JSON>{
+        try{
+            const funcionario = await this.funcionarioRepository.query(
+                'CALL CadastrarFuncionario(?, ?, ?, ?, ?)', 
+                [nome, cpf, sexo, email, JSON.stringify(categorias)]
+            );
+            return funcionario;
+        } catch(err){
+            throw new Error('Erro ao cadastrar funcionario: ');
+        }
+    }
+
     async FuncionariosEspecialidade(): Promise<JSON> {
         try{
             const funcionarios = await this.funcionarioRepository.query(

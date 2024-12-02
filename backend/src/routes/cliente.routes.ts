@@ -25,6 +25,8 @@ class ClienteRoutes {
     //  Retorna cliente pelo email
     this.router.get("/email", this.controller.findByEmail);
 
+    this.router.put("/cliente/:id/prc", this.controller.AtualizaComProcedure);
+
     // Atualizar um cliente pelo seu id
     this.router.put("/cliente/:id", this.controller.update);
 

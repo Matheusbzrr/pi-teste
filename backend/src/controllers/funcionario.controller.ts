@@ -40,12 +40,38 @@ export default class FuncionarioController{
             res.status(500).send({ message: "Erro ao cadastrar o funcionario"});
         }
     }
+
+    async cadastrarFuncionario(req: Request, res: Response){
+        const {nome, cpf, sexo, email, categorias }= req.body;
+        const verfica = await funcionarioRepository.buscarByCpf(cpf)
+
+        if (verfica?.cpf == cpf || verfica?.email == email){
+            res.status(400).send({ message: "CPF ou email ja está atrelado a um funcionario! "});
+            return;
+        } else{
+            await funcionarioRepository.cadastrarFuncionarioPrc(
+                nome,
+                cpf,
+                sexo,
+                email,
+                categorias
+            );
+
+        }
+
+        try{
+            res.status(201).send("ok");
+        }catch(err){
+            res.status(500).send({ message: "Erro ao cadastrar o funcionario"});
+        }
+    }
+
+
     
     async ObterFuncionariosComEspecialidade(req: Request, res: Response){
         try{
             const FuncionariosEspecialidade = await funcionarioRepository.FuncionariosEspecialidade();
             res.status(200).send(FuncionariosEspecialidade);
-            
             
         } catch{
             res.status(500).send({ message: "Erro ao buscar os funcionarios com especialidade"});
