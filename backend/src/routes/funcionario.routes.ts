@@ -12,7 +12,7 @@ class FuncionarioRoutes{
     initializeRoutes(){
         this.router.post("/funcionario", this.controller.create);
 
-        this.router.post("/funcionario/cadastro", this.controller.cadastrarFuncionario)
+        this.router.post("/funcionario/cadastro", this.controller.cadastrarFuncionario);
 
         this.router.get("/funcionarios", this.controller.findAll);
 
