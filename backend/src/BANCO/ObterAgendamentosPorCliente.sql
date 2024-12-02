@@ -9,7 +9,7 @@ begin
         a.data,
         a.horario,
         a.valorTotal,
-        c.idcliente,
+        c.idCliente,
         c.nome as nomeCliente,
         c.email,
         c.telefone,
