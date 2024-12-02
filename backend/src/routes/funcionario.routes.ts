@@ -14,6 +14,8 @@ class FuncionarioRoutes{
 
         this.router.get("/funcionarios", this.controller.findAll);
 
+        this.router.get("/funcionarios/especialidade", this.controller.ObterFuncionariosComEspecialidade);
+
         this.router.get("/funcionario/cpf", this.controller.findByCpf);
 
         this.router.put("/funcionario/:id", this.controller.update);

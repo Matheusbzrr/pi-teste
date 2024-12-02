@@ -41,7 +41,17 @@ export default class FuncionarioController{
         }
     }
     
+    async ObterFuncionariosComEspecialidade(req: Request, res: Response){
+        try{
+            const FuncionariosEspecialidade = await funcionarioRepository.FuncionariosEspecialidade();
+            res.status(200).send(FuncionariosEspecialidade);
+            
+            
+        } catch{
+            res.status(500).send({ message: "Erro ao buscar os funcionarios com especialidade"});
+        }
 
+    }
 
     async findAll(req: Request, res: Response) {
         try{

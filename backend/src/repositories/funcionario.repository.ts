@@ -13,6 +13,17 @@ class FuncionarioRepository {
         }
     }
 
+    async FuncionariosEspecialidade(): Promise<JSON> {
+        try{
+            const funcionarios = await this.funcionarioRepository.query(
+                'CALL ObterFuncionariosEspecialidades()'
+            );
+            return funcionarios;
+        } catch(err){
+            throw new Error('Erro ao listar funcionarios com categorias: ');
+        }
+    }
+
     async buscarAll(): Promise<Funcionario[]> {
         try{
             return await this.funcionarioRepository.find();
@@ -20,6 +31,7 @@ class FuncionarioRepository {
             throw new Error('Erro ao listar funcionarios: ');
         }
     }
+
 
     async buscarById(FuncionarioId: number): Promise<Funcionario | null> {
         try{
