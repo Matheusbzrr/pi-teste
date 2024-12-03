@@ -1,3 +1,5 @@
+use salaosenac;
+
 DELIMITER //
 
 CREATE PROCEDURE criarAgendamento(
@@ -14,17 +16,17 @@ BEGIN
     DECLARE idServico INT;
     DECLARE servicoCount INT;
 
-    -- Inserir o agendamento na tabela Agendamento
+    
     INSERT INTO Agendamento (clienteIdCliente, data, horario, valorTotal, funcionarioIdFuncionario)
     VALUES (p_idCliente, p_data, p_horario, p_valorTotal, p_idFuncionario);
 
-    -- Obter o ID do agendamento recém-inserido
+    
     SET last_insert_id = LAST_INSERT_ID();
 
-    -- Obter a quantidade de serviços
+   
     SET servicoCount = JSON_LENGTH(p_servicoIds);
 
-    -- Inserir os serviços na tabela de junção Agendamento_Servico
+   
     WHILE i < servicoCount DO
         SET idServico = JSON_UNQUOTE(JSON_EXTRACT(p_servicoIds, CONCAT('$[', i, ']')));
         INSERT INTO agendamento_servicos_servico (agendamentoIdAgendamento, servicoIdServico)
