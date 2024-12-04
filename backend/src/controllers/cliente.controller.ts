@@ -176,6 +176,23 @@ export default class ClienteController {
         }
     }
 
+    async delete (req: Request, res: Response){
+
+        const idCliente = parseInt(req.params.id);
+        try{
+            await clienteRepository.delete(idCliente);
+            res.status(200).send({
+                message: "Cliente excluido com sucesso!"
+            });
+
+        } catch{
+            res.status(500).send({
+                message: `Erro ao tentar excluir o cliente com id=${idCliente}.`
+            });
+
+        }
+    }
+
 
 
     

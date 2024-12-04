@@ -105,6 +105,19 @@ class ClienteRepository {
     
     }
 
+    async delete(clienteId: number): Promise<any> {
+        try{
+            await this.clienteRepository.query(
+                'CALL DeletarCliente(?)',
+                [clienteId]
+            );
+            return "ok";
+        } catch{
+            throw new Error('Erro ao deletar cliente com procedures!');
+        }        
+
+}
+
 }
 
 

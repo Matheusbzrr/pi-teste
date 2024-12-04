@@ -9,7 +9,7 @@
     "build": "rimraf .build && tsc"
   },
   "keywords": [],
-  "author": "Matheus Bezerra",
+  "author": "Matheus Bezerra da Silva - Repositório: https://github.com/Matheusbzrr?tab=repositories",
   "license": "ISC",
   "description": "Sistema de agendamento para o salão senac",
   "dependencies": {

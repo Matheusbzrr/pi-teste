@@ -30,6 +30,8 @@ class ClienteRoutes {
     // Atualizar um cliente pelo seu id
     this.router.put("/cliente/:id", this.controller.update);
 
+    this.router.delete("/cliente/:id", this.controller.delete);
+
   }
 }
 
