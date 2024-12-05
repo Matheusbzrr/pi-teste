@@ -13,4 +13,5 @@ end $$
 
 delimiter ;
 
+-- teste!!
 call DeletarCliente(29);
